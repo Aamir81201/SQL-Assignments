@@ -122,7 +122,12 @@ LEFT OUTER JOIN salesman s ON o.salesman_id = s.salesman_id)
 GO
 
 -------------------------(07)-------------------------------------------------------
-
+SELECT c.customer_id, c.cust_name, c.city AS cust_city,s.city AS salesman_city, 
+c.grade, s.salesman_id, s.[name] AS salesman, s.commission, o.ord_no, o.ord_date, o.purch_amt 
+FROM ((orders o
+INNER JOIN customer c ON o.customer_id = c.customer_id)
+INNER JOIN salesman s ON o.salesman_id = s.salesman_id)
+GO
 
 -------------------------(08)-------------------------------------------------------
 SELECT c.cust_name, c.city AS customer_city, grade,s.[name] AS salesman, s.city AS salesman_city
