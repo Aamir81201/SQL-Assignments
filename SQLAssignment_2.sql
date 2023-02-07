@@ -179,7 +179,12 @@ LEFT OUTER JOIN customer c ON s.salesman_id = c.salesman_id)
 GO
 
 -------------------------(14,15)----------------------------------------------------
-
+SELECT  s.[name] AS salesman, c.cust_name, c.grade, o.purch_amt
+FROM((salesman s
+LEFT OUTER JOIN customer c ON s.salesman_id = c.salesman_id)
+LEFT OUTER JOIN orders o ON c.customer_id = o.customer_id )
+WHERE (purch_amt > 2000 AND C.grade IS NOT NULL) OR (o.customer_id IS NULL)
+GO
 
 -------------------------(16)-------------------------------------------------------
 SELECT c.cust_name, c.city AS cust_city, o.ord_no, o.ord_date, o.purch_amt 
