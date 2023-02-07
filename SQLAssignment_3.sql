@@ -23,7 +23,7 @@ SELECT * FROM Department;
 SELECT * FROM Employee;
 GO
 
-INSERT INTO Department VALUES (101, 'dotNet')
+INSERT INTO Department VALUES (101, '.Net')
 INSERT INTO Department VALUES (102, 'Java')
 INSERT INTO Department VALUES (103, 'PHP')
 INSERT INTO Department VALUES (104, 'QA')
