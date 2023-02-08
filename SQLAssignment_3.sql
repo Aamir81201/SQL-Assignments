@@ -19,6 +19,7 @@ salary MONEY NOT NULL
 )
 GO
 
+
 SELECT * FROM Department;
 SELECT * FROM Employee;
 GO
@@ -28,12 +29,13 @@ INSERT INTO Department VALUES (102, 'Java')
 INSERT INTO Department VALUES (103, 'PHP')
 INSERT INTO Department VALUES (104, 'QA')
 INSERT INTO Department VALUES (105, 'HR')
+INSERT INTO Department VALUES (106, 'Sales')
 GO
 
 INSERT INTO Employee VALUES(105, null,'Sweety Patel', '180000')
 INSERT INTO Employee VALUES(105, null,'Itesh Sharma', '160000')
 INSERT INTO Employee VALUES(102, 2,'Adesh Panchal', '85000')
-INSERT INTO Employee VALUES(101, 1,'Harshad Patel', '100000')
+INSERT INTO Employee VALUES(101, 1,'Harshad Patel', '85000')
 INSERT INTO Employee VALUES(103, 1,'Rutvik Vora', '130000')
 INSERT INTO Employee VALUES(101, 4,'Aamir Dalal', '150000')
 INSERT INTO Employee VALUES(103, 3,'Manish Lakhara', '50000')
@@ -50,18 +52,27 @@ GO
 
 
 -------------------------(01)-------------------------------------------------------
-SELECT D.dept_name, E.emp_name, E.salary
-FROM Employee E
-INNER JOIN Department D
-ON E.dept_id = D.dept_id
-WHERE salary IN (SELECT MAX(salary) FROM Employee GROUP BY dept_id)
+SELECT D.dept_name, E.emp_name, ISNULL(salary, '0')
+FROM Department D
+LEFT JOIN Employee E
+ON D.dept_id = E.dept_id
+WHERE E.dept_id IN (
+					SELECT E2.dept_id 
+					FROM Employee E2 
+					WHERE E.salary IN (
+									   SELECT MAX(E3.salary) 
+									   FROM Employee E3 
+									   WHERE E3.dept_id = E.dept_id 
+									   GROUP BY E3.dept_id
+									   )
+					) OR SALARY IS NULL
 GO
 
 -------------------------(02)-------------------------------------------------------
 SELECT D.dept_name, COUNT(E.emp_id) AS [Total Employees]
-FROM Employee E
-INNER JOIN Department D
-ON E.dept_id = D.dept_id
+FROM Department D
+LEFT JOIN Employee E
+ON D.dept_id = E.dept_id
 GROUP BY D.dept_name
 HAVING COUNT(E.emp_id) < 3
 GO
@@ -75,7 +86,7 @@ GROUP BY D.dept_name
 GO
 
 -------------------------(04)-------------------------------------------------------
-SELECT D.dept_name, SUM(E.salary) AS [Total Salary]
+SELECT D.dept_name, ISNULL(SUM(E.salary), '0') AS [Total Salary]
 FROM Department D
 LEFT OUTER JOIN Employee E
 ON D.dept_id = E.dept_id
