@@ -43,12 +43,22 @@ BEGIN
 END
 GO
 
---Valid
+--Valid (Avg = 23)
 INSERT INTO "Orders"
 ("CustomerID","EmployeeID","OrderDate","RequiredDate",
 	"ShippedDate","ShipVia","Freight","ShipName","ShipAddress",
 	"ShipCity","ShipRegion","ShipPostalCode","ShipCountry")
 VALUES (N'REGGC',4,'8/23/1996','9/20/1996','9/3/1996',1,16.45,
+	N'Reggiani Caseifici',N'Strada Provinciale 124',N'Reggio Emilia',
+	NULL,N'42100',N'Italy')
+GO
+
+--Invalid (Avg = 23)
+INSERT INTO "Orders"
+("CustomerID","EmployeeID","OrderDate","RequiredDate",
+	"ShippedDate","ShipVia","Freight","ShipName","ShipAddress",
+	"ShipCity","ShipRegion","ShipPostalCode","ShipCountry")
+VALUES (N'REGGC',4,'8/23/1996','9/20/1996','9/3/1996',1,60.45,
 	N'Reggiani Caseifici',N'Strada Provinciale 124',N'Reggio Emilia',
 	NULL,N'42100',N'Italy')
 GO
