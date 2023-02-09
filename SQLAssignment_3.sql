@@ -52,21 +52,14 @@ GO
 
 
 -------------------------(01)-------------------------------------------------------
-SELECT D.dept_name, E.emp_name, ISNULL(salary, '0')
+SELECT D.dept_name, E.emp_name, E.salary
 FROM Department D
+LEFT JOIN (SELECT dept_id, MAX(salary) MaxSalary FROM Employee GROUP BY dept_id) MS 
+ON D.dept_id = MS.dept_id
 LEFT JOIN Employee E
 ON D.dept_id = E.dept_id
-WHERE E.dept_id IN (
-					SELECT E2.dept_id 
-					FROM Employee E2 
-					WHERE E.salary IN (
-									   SELECT MAX(E3.salary) 
-									   FROM Employee E3 
-									   WHERE E3.dept_id = E.dept_id 
-									   GROUP BY E3.dept_id
-									   )
-					) OR SALARY IS NULL
-GO
+WHERE E.salary = MS.MaxSalary or E.salary IS NULL
+
 
 -------------------------(02)-------------------------------------------------------
 SELECT D.dept_name, COUNT(E.emp_id) AS [Total Employees]
